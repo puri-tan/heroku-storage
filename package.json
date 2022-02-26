@@ -1,5 +1,5 @@
 {
-  "type":"commonjs",
+  "type": "commonjs",
   "name": "heroku-storage",
   "description": "Storage API for Puri-tan on Heroku",
   "keywords": [
@@ -19,5 +19,9 @@
     "url": "https://github.com/puri-tan/heroku-storage.git"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
-  "main": "index.js"
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  }
 }
