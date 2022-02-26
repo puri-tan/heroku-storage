@@ -9,10 +9,6 @@ create type public.bible_version as enum (
 	'acf', 'apee', 'bbe', 'kjv', 'nvi', 'ra', 'rvr'
 );
 
-create type public.culture_info as enum (
-	'pt-BR', 'en-US'
-);
-
 create type discord.prayer_petition_setting as (
 	approval_channel_id discord.id,
 	petition_channel_id discord.id
@@ -26,8 +22,7 @@ create table discord.user_settings (
 create table discord.server_settings (
 	server_id discord.id not null primary key,
 	default_bible_version public.bible_version,
-	prayer_petition_setting discord.prayer_petition_setting,
-	culture public.culture_info not null default 'pt-BR'
+	prayer_petition_setting discord.prayer_petition_setting
 );
 
 create table discord.prayer_petitions (
