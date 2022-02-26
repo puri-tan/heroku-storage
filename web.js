@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const pgp = require('pg-promise')()
 const queries = require('./queries')
 const { getRes, putRes, deleteRes } = require('./responses')
+const basicAuth = require('express-basic-auth')
 
 dotenv.config()
 
@@ -14,6 +15,13 @@ const app = express()
 const db = pgp(databaseUrl)
 
 app.use(bodyParser.json())
+
+app.use(basicAuth({
+  users: {
+    'admin': process.env.ADMIN_PASSWORD,
+    'puri-tan': process.env.PURI_TAN_PASSWORD
+  }
+}))
 
 app.get('/discord/user/settings/:userId', (req, res) => {
   getRes(db, queries.discord.user.settings.get, req.params, res)
