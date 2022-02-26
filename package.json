@@ -1,0 +1,23 @@
+{
+  "type":"commonjs",
+  "name": "heroku-storage",
+  "description": "Storage API for Puri-tan on Heroku",
+  "keywords": [
+    "Puri-tan",
+    "Discord",
+    "Bible",
+    "Bot",
+    "Devotional"
+  ],
+  "author": {
+    "name": "Ismael Carlos Velten"
+  },
+  "version": "1.0.0",
+  "homepage": "https://github.com/puri-tan/heroku-storage",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/puri-tan/heroku-storage.git"
+  },
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "main": "index.js"
+}
