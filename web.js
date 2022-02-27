@@ -3,7 +3,7 @@ const dotenv = require('dotenv')
 const bodyParser = require('body-parser')
 const pgp = require('pg-promise')()
 const queries = require('./queries')
-const { getRes, putRes, deleteRes } = require('./responses')
+const { getRes, putRes, deleteRes, postRes } = require('./responses')
 const basicAuth = require('express-basic-auth')
 
 dotenv.config()
@@ -49,16 +49,7 @@ app.delete('/discord/user/settings/:userId', (req, res) => {
 // Server Settings
 
 app.get('/discord/server/settings/:serverId', (req, res) => {
-  getRes(db, queries.discord.server.settings.get, req.params, res, data => {
-    return {
-      serverId: data.serverId,
-      defaultBibleVersion: data.defaultBibleVersion,
-      prayerPetitionSetting: {
-        approvalChannelId: data.approvalChannelId,
-        petitionChannelId: data.petitionChannelId
-      }
-    }
-  })
+  getRes(db, queries.discord.server.settings.get, req.params, res)
 })
 
 app.put('/discord/server/settings', (req, res) => {
@@ -74,6 +65,28 @@ app.delete('/discord/server/settings/:serverId', (req, res) => {
   deleteRes(db,
     queries.discord.server.settings.check,
     queries.discord.server.settings.delete,
+    req.params,
+    res)
+})
+
+// Prayer petitions
+
+app.get('/discord/prayer/petitions/:prayerId', (req, res) => {
+  getRes(db, queries.discord.prayer.petitions.get, req.params, res)
+})
+
+app.post('/discord/prayer/petitions', (req, res) => {
+  postRes(db,
+    queries.discord.prayer.petitions.check,
+    queries.discord.prayer.petitions.create,
+    req.body,
+    res)
+})
+
+app.delete('/discord/prayer/petitions/:prayerId', (req, res) => {
+  deleteRes(db,
+    queries.discord.prayer.petitions.check,
+    queries.discord.prayer.petitions.delete,
     req.params,
     res)
 })

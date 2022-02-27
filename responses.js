@@ -1,12 +1,9 @@
 const camelCaseKeysDeep = require('camelcase-keys-deep')
 
-function data(res, dataFormatter) {
+function data(res) {
   return (data) => {
     if (data) {
-      if (dataFormatter)
-        res.json(dataFormatter(camelCaseKeysDeep(data)))
-      else
-        res.json(camelCaseKeysDeep(data))
+      res.json(camelCaseKeysDeep(data))
     } else {
       res.statusCode = 404
       res.end()
@@ -36,14 +33,28 @@ function created(res) {
   }
 }
 
-const getRes = (db, sql, params, res, dataFormatter) => {
-  db.oneOrNone(sql, params).then(data(res, dataFormatter)).catch(error(res))
+function unprocessable(res) {
+  res.statusCode = 422
+  res.end()
+}
+
+const getRes = (db, sql, params, res) => {
+  db.oneOrNone(sql, params).then(data(res)).catch(error(res))
 }
 
 const putRes = (db, checkSql, createSql, updateSql, body, res) => {
   db.oneOrNone(checkSql, body).then((data) => {
     if (data)
       db.none(updateSql, body).then(noContent(res)).catch(error(res))
+    else
+      db.none(createSql, body).then(created(res)).catch(error(res))
+  }).catch(error(res))
+}
+
+const postRes = (db, checkSql, createSql, body, res) => {
+  db.oneOrNone(checkSql, body).then((data) => {
+    if (data)
+      unprocessable(res)
     else
       db.none(createSql, body).then(created(res)).catch(error(res))
   }).catch(error(res))
@@ -61,5 +72,5 @@ const deleteRes = (db, checkSql, deleteSql, params, res) => {
 }
 
 module.exports = {
-  getRes, putRes, deleteRes
+  getRes, putRes, deleteRes, postRes
 }
