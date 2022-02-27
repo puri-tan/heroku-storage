@@ -1,9 +1,12 @@
-const camelcaseKeysDeep = require('camelcase-keys-deep')
+const camelCaseKeysDeep = require('camelcase-keys-deep')
 
-function data(res) {
+function data(res, dataFormatter) {
   return (data) => {
     if (data) {
-      res.json(camelcaseKeysDeep(data))
+      if (dataFormatter)
+        res.json(dataFormatter(camelCaseKeysDeep(data)))
+      else
+        res.json(camelCaseKeysDeep(data))
     } else {
       res.statusCode = 404
       res.end()
@@ -33,8 +36,8 @@ function created(res) {
   }
 }
 
-const getRes = (db, sql, params, res) => {
-  db.oneOrNone(sql, params).then(data(res)).catch(error(res))
+const getRes = (db, sql, params, res, dataFormatter) => {
+  db.oneOrNone(sql, params).then(data(res, dataFormatter)).catch(error(res))
 }
 
 const putRes = (db, checkSql, createSql, updateSql, body, res) => {

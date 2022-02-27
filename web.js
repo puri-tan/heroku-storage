@@ -23,6 +23,8 @@ app.use(basicAuth({
   }
 }))
 
+// User Settings
+
 app.get('/discord/user/settings/:userId', (req, res) => {
   getRes(db, queries.discord.user.settings.get, req.params, res)
 })
@@ -40,6 +42,38 @@ app.delete('/discord/user/settings/:userId', (req, res) => {
   deleteRes(db,
     queries.discord.user.settings.check,
     queries.discord.user.settings.delete,
+    req.params,
+    res)
+})
+
+// Server Settings
+
+app.get('/discord/server/settings/:serverId', (req, res) => {
+  getRes(db, queries.discord.server.settings.get, req.params, res, data => {
+    return {
+      serverId: data.serverId,
+      defaultBibleVersion: data.defaultBibleVersion,
+      prayerPetitionSetting: {
+        approvalChannelId: data.approvalChannelId,
+        petitionChannelId: data.petitionChannelId
+      }
+    }
+  })
+})
+
+app.put('/discord/server/settings', (req, res) => {
+  putRes(db,
+    queries.discord.server.settings.check,
+    queries.discord.server.settings.create,
+    queries.discord.server.settings.update,
+    req.body,
+    res)
+})
+
+app.delete('/discord/server/settings/:serverId', (req, res) => {
+  deleteRes(db,
+    queries.discord.server.settings.check,
+    queries.discord.server.settings.delete,
     req.params,
     res)
 })
