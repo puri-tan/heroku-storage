@@ -91,6 +91,30 @@ app.delete('/discord/prayer/petitions/:prayerId', (req, res) => {
     res)
 })
 
+// Prayer approvals
+
+app.get('/discord/prayer/approvals/:serverId/:prayerId', (req, res) => {
+  getRes(db, queries.discord.prayer.approvals.get, req.params, res)
+})
+
+app.post('/discord/prayer/approvals', (req, res) => {
+  postRes(db,
+    queries.discord.prayer.approvals.check,
+    queries.discord.prayer.approvals.create,
+    req.body,
+    res)
+})
+
+app.delete('/discord/prayer/approvals/:serverId/:prayerId', (req, res) => {
+  deleteRes(db,
+    queries.discord.prayer.approvals.check,
+    queries.discord.prayer.approvals.delete,
+    req.params,
+    res)
+})
+
+// App entrypoint
+
 app.listen(port, () => {
   console.log(`API running on port ${port}.`)
 })

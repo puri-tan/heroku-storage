@@ -32,7 +32,7 @@ create table discord.prayer_petitions (
 
 create table discord.prayer_approvals (
 	server_id discord.id not null,
-	prayer_id discord.id not null,
+	prayer_id public.nanoid not null,
 	primary key (server_id, prayer_id),
 	constraint fk_prayer_petition
 		foreign key (prayer_id)

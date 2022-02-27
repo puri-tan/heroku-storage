@@ -32,6 +32,12 @@ module.exports = {
         get: sql('discord/prayer/petitions/get.sql'),
         create: sql('discord/prayer/petitions/create.sql'),
         delete: sql('discord/prayer/petitions/delete.sql')
+      },
+      approvals: {
+        check: sql('discord/prayer/approvals/check.sql'),
+        get: sql('discord/prayer/approvals/get.sql'),
+        create: sql('discord/prayer/approvals/create.sql'),
+        delete: sql('discord/prayer/approvals/delete.sql')
       }
     }
   }
